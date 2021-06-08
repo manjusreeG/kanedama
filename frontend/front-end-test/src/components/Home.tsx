@@ -1,5 +1,6 @@
 import useRandomAPI from "../hooks/useRandomAPI";
 import useSirenAPI from "../hooks/useSirenAPI";
+import useAccountsAPI from "../hooks/useAccountsAPI";
 
 import styled from 'styled-components';
 
@@ -21,6 +22,8 @@ const Home: React.FC= ()=>{
     const userData: any = useRandomAPI()[0];
     // Fetching  business information
     const companyData: any = useSirenAPI();
+    // Fetching  financial information
+    const accounts: any = useAccountsAPI();
 
  return <HomeContainer>
      <div style={{height:'100%',backgroundColor:'#cbc2f0'}}>
@@ -40,6 +43,15 @@ const Home: React.FC= ()=>{
             <CompanyInfo>SIRET: {data.unite_legale.siren}</CompanyInfo>
             <CompanyInfo>Address: {data.unite_legale.etablissement_siege.geo_adresse}</CompanyInfo>
             </div>)}
+         </div>
+         <div>
+            <Heading>Accounts: </Heading>
+            {accounts.map((account:any)=>
+                <div style={{display: 'inline-block', margin: '10px 10px 10px 0px', width:'30%', border:'1px solid pink', padding:'10px'}}>
+                    <div>Account Number: {account.account_number} </div>
+                    <div>Balance:{account.available} </div>
+                </div>
+            )}
          </div>
      </div>
      </HomeContainer>
