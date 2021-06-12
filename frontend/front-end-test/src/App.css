@@ -12,13 +12,14 @@ html, #root{
 }
 
 .App-header {
-  height: 5%;
-  /* background-color: #cbc2f0; */
+  height: 20px;
   background-color: #00000f;
   font-size: calc(10px + 2vmin);
   color: white;
   padding: 25px;
   text-align: left;
+  position: fixed;
+  width: 100%;
 }
 
 .App-link {

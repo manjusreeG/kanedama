@@ -7,11 +7,13 @@ import useSirenAPI from "../hooks/useSirenAPI";
 import Accounts from '../components/Accounts';
 import styled from 'styled-components';
 
-export const HomeContainer = styled.div`
+export const Container  = styled.div`
   font-size: 1.2em;
   color: #00000f;
   display: inline-flex;
   height: 100%;
+  margin-top: 5%;
+  width:100%;
 `;
 
 const CompanyInfo = styled.span`
@@ -27,37 +29,21 @@ const Home: React.FC= ()=>{
     const userData: any = useRandomAPI()[0];
     // Fetching  business information
     const companyData: any = useSirenAPI();
-    // Fetching  financial information
-    // const accounts: any = useAccountsAPI();
-    // const onClick = () =>{
-    //     console.log('val')
-    // }
 
- return <>
-     {/* <div style={{height:'100%',backgroundColor:'#cbc2f0'}}>
-     <ul style={{marginRight:'20px'}}>
-        <li><Link to="/">
-Accounts</Link></li>
-        <li>Profile</li>
-     </ul>
-     </div> */}
-     {/* {userData.map((user:any,idx:number)=><p key={idx}>{user.gender}+{user.name && user.name.first}</p>)}</div> */}
-     <div style={{marginLeft:'10px'}}>
+ return (<div style={{marginLeft:'17%'}}>
          <p style={{fontSize:'2em'}}>{userData.gender==='male'?"M.": "Mme."}{userData.name && userData.name.last}</p>
          <div>
             <Heading>Company:</Heading>
             {/* <CompanyInfo />  */}
             {companyData.map((data: any)=>data.unite_legale &&
             <div> 
-            <CompanyInfo>Name: {data.unite_legale.nom}</CompanyInfo>
+            <CompanyInfo>Name: {data.unite_legale.nom?data.unite_legale.nom:data.unite_legale.denomination}</CompanyInfo>
             <CompanyInfo>SIRET: {data.unite_legale.siren}</CompanyInfo>
             <CompanyInfo>Address: {data.unite_legale.etablissement_siege.geo_adresse}</CompanyInfo>
             </div>)}
          </div>
          <Accounts />
-     </div>
-     </>
-
+     </div>)
 }
 
 export default Home

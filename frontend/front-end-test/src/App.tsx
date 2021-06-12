@@ -1,10 +1,11 @@
 import React from 'react';
 import logo from './assets/mansa-original.png';
 import './App.css';
-import Home, { HomeContainer } from './pages/Home';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home, { Container } from './pages/Home';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Profile from './pages/Profile';
+import Transactions from './pages/Transactions';
 
 function App() {
   return (
@@ -12,16 +13,17 @@ function App() {
       <div className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
       </div>
-      <Router>
-        <HomeContainer>
-        <Navbar/>
-        <Switch>
-          <Route exact path='/' component={Home} />
-          <Route path='/Profile'>{Profile}</Route>
-        </Switch>
-        </HomeContainer>
-      </Router>
-      {/* <Home/> */}
+          <Container>
+          <Navbar/>
+          <Switch>
+            <Route path='/' exact>
+              <Redirect to='/accounts' />
+            </Route>
+            <Route path='/accounts' component={Home} exact/>
+            <Route path='/profile' component={Profile}/>
+            <Route path='/accounts/:accountId' component={Transactions}/>
+          </Switch>
+          </Container>
     </div>
   );
 }

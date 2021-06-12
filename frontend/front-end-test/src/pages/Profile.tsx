@@ -7,10 +7,10 @@ const Heading= styled.div`
 `;
 
 const Profile: React.FC=()=>{
-
-    return <div>
-    <Heading>User Profile Info: </Heading>
- </div>
+    
+    return <div style={{marginLeft:'17%'}}>
+            <Heading>User Profile Info: </Heading>
+        </div>
 }
 
 export default Profile;
