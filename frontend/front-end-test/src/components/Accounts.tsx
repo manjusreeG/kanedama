@@ -39,6 +39,7 @@ const ModalComp = styled(Modal)`
 `
 const Accounts=():JSX.Element=>{
     const [openModal,setOpenModal] = useState(false);
+    const [fetchDate, setFetchDate] = useState(false);
     const [selectedAccount,setSelectedAccount] = useState<any>();
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
@@ -56,12 +57,19 @@ const Accounts=():JSX.Element=>{
             search: `startDate=${convertDateToISO(startDate)}&endDate=${convertDateToISO(endDate)}`,
             state: selectedAccount
         })
-            // `/accounts/${selectedAccountId}?startDate=2015-02-04T22:44:30.652&endDate=2015-12-31T22:44:30.652Z`)
+    }
+    const fetchLastTrans= ()=>{
+        setFetchDate(false);
+        setOpenModal(false);
+        history.push({
+            pathname:`/accounts/${selectedAccount.account_id}`,
+            state: selectedAccount
+        })
     }
     return <AccountDetails>
     <Heading>Accounts: </Heading>
     {accounts.map((account:any)=>
-        <div  className='account-details'>
+        <div key={account.account_id} className='account-details'>
             <div>Account Number: {account.account_number} </div>
             <div>Balance:{account.available} </div>
             <button onClick={()=>openAccountModal(account)}>View Transactions</button>
@@ -71,13 +79,20 @@ const Accounts=():JSX.Element=>{
         isOpen={openModal}
         contentLabel="Transaction"
       >
-        <div className="modal-title">Please select date range:</div>
-        <label>Start Date</label>
-        <DatePicker value={startDate} onChange={setStartDate} 
-        minDate={moment().subtract(1, "years").toDate()}/>
-        <label>End Date</label>
-        <DatePicker value={endDate} onChange={setEndDate}/>
-        <button className="submitBtn" onClick={checkTransactions}>Check transactions</button>
+        {fetchDate ?
+        <>
+            <div className="modal-title">Please select date range:</div>
+            <label>Start Date</label>
+            <DatePicker value={startDate} onChange={setStartDate} 
+            minDate={moment().subtract(1, "years").toDate()}/>
+            <label>End Date</label>
+            <DatePicker value={endDate} onChange={setEndDate}/>
+            <button className="submitBtn" onClick={checkTransactions}>Check transactions</button>
+        </>
+        :<div>Do you want to view transactions for the specified dates?
+                        <button className="submitBtn" onClick={()=>setFetchDate(true)}>Yes</button>
+                        <button className="submitBtn" onClick={fetchLastTrans}>No</button>
+        </div>}
       </ModalComp>
  </AccountDetails>
 }

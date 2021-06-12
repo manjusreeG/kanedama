@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { UserContext } from '../App';
 
 
 const Heading= styled.div`
@@ -7,9 +8,11 @@ const Heading= styled.div`
 `;
 
 const Profile: React.FC=()=>{
+    const userData: any = useContext(UserContext);
     
     return <div style={{marginLeft:'17%'}}>
             <Heading>User Profile Info: </Heading>
+            <div>Name: {userData.name && userData.name.last}</div>
         </div>
 }
 

@@ -14,7 +14,7 @@ const Transactions: React.FC=()=>{
     const accountDetails:any = location.state;
     const startDate: any = queryParams.get('startDate');
     const endDate: any = queryParams.get('endDate');
-    const [transactionInfo] = useAccountTransactions(accountDetails.account_id, startDate, endDate);
+    const transactionInfo= useAccountTransactions(accountDetails.account_id, startDate, endDate);
 
     console.log("trans ",transactionInfo);
 
@@ -27,9 +27,10 @@ const Transactions: React.FC=()=>{
             <p>Start Date: {queryParams.get('startDate')}</p>
             <p>End Date: {queryParams.get('endDate')}</p>
             <ul>
-            {transactionInfo.map((trannaction: any)=>
-                <li>{trannaction.amount} Currency: {trannaction.currency}</li>
-            )}
+            {transactionInfo ? transactionInfo.map((trannaction: any)=>
+                <li>{trannaction.amount} Currency: {trannaction.currency}</li>)
+                :<></>
+            }
             </ul>
         </div>
 }

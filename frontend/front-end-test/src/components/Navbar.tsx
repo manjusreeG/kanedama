@@ -9,15 +9,27 @@ const NavbarComp = styled.div`
     width: 15%;
     background-color: #CBC2F0;
     position:fixed;
+    .navList{
+        margin-right: 20px;
+        list-style: none;
+        margin: 5px;
+        border: 1px solid;
+        text-decoration: none;
+    }
+    .active{
+        background-color: #00000F;
+    }
 `;
 
+
 const Navbar: React.FC = ()=>{
- return ( <NavbarComp>
- <ul style={{marginRight:'20px'}}>
-    <li><NavLink to='/accounts'> Accounts</NavLink></li>
-    <li><NavLink to='/profile'> Profile</NavLink></li>
- </ul>
- </NavbarComp>)
-}
+ return ( 
+ <NavbarComp>
+    <ul className='navList'>
+        <li><NavLink activeClassName='active' to='/accounts'> Accounts</NavLink></li>
+        <li><NavLink activeClassName='active' to='/profile'> Profile</NavLink></li>
+    </ul>
+ </NavbarComp>
+ )}
 
 export default Navbar;
