@@ -4,6 +4,7 @@ html, #root{
 
 .App {
   height: 100%;
+  font-family: 'Bookman Old Style', serif;
 }
 
 .App-logo {
@@ -12,13 +13,16 @@ html, #root{
 }
 
 .App-header {
-  height: 20px;
-  background-color: #00000f;
+  height: 5%;
+  background-color: #0F032E;  
   font-size: calc(10px + 2vmin);
   color: white;
   padding: 25px;
   text-align: left;
   position: fixed;
+  top:0;
+  left:0;
+  z-index: 1;
   width: 100%;
 }
 

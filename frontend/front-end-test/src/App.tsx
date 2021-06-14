@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import logo from './assets/mansa-original.png';
 import './App.css';
 import Home, { Container } from './pages/Home';
