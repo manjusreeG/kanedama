@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Modal from 'react-modal';
 
 import useAccountsAPI from '../hooks/useAccountsAPI';
 import DatePicker from 'react-date-picker';
 import moment from "moment";
+import { DateRangePicker } from 'react-date-range';
 import { useHistory } from 'react-router-dom';
 import { Heading } from '../pages/Home';
+import 'react-date-picker/dist/DatePicker.css';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
 
 // Convert Date to ISO format helper
@@ -44,16 +48,44 @@ export const AccountDetailsBlock = styled.div`
 `;
 
 const ModalComp = styled(Modal)`
-    border: 1px solid red;
+    border: 1px solid pink;
     border-radius: 5px;
-    margin: 10% 30% 5%;
+    margin: 15% 30% 5%;
     padding: 20px;
+    background: linear-gradient(180deg,rgba(247, 143, 197, 0.20), rgba(203, 194, 240, 0.56));
+    .modal {
+
+    }
+    .hintMsg{
+        color: red;
+        // padding: 40px 0px;
+        margin: 20px 0px;
+    }
+    .confirmTransaction{
+        font-size: 20px;
+        text-align: center;
+    }
     .modalTitle {
-        color: blue;
+        font-size: 24px;
         margin: 10px 5px 10px 0px;
     }
+    button:disable{
+        color: red;
+    }
     .submitBtn{
-        border:1px solid red
+        font-size: 1em;
+        padding: 10px;
+        margin: 10px;
+        width: 15%;
+        border: 1px solid;
+        background-color: rgba(223, 77, 215, 0.7);
+        color: white;
+        border-radius: 5px;
+        border: 1px solid pink;
+    }
+    .checkTransaction{
+        width: 35%;
+        margin: 0% 35%;
     }
 `
 const Accounts = (): JSX.Element => {
@@ -62,12 +94,15 @@ const Accounts = (): JSX.Element => {
     const [selectedAccount, setSelectedAccount] = useState<any>();
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
+    const [enableCheckTrans, setEnableCheckTrans] = useState(false);
     const accounts: any = useAccountsAPI();
     let history = useHistory();
+
     const openAccountModal = (accounts: any) => {
         console.log('aacc', accounts)
         setSelectedAccount(accounts)
         setOpenModal(true);
+        setStartDate(moment(endDate).subtract(1, "years").toDate());
     }
     const checkTransactions = () => {
         setOpenModal(false);
@@ -85,6 +120,15 @@ const Accounts = (): JSX.Element => {
             state: selectedAccount
         })
     }
+
+    useEffect(()=>{
+        const differenceDays =  Math.abs(moment(startDate).diff(moment(endDate),'days'));
+        console.log('diff datqs', differenceDays);
+        if(differenceDays<=365) {
+            setEnableCheckTrans(true) 
+        } else{setEnableCheckTrans(false)};
+    },[startDate,endDate])
+
     return <AccountDetailsBlock>
         <Heading>Accounts: </Heading>
         {accounts.map((account: any) =>
@@ -94,24 +138,37 @@ const Accounts = (): JSX.Element => {
                 <button onClick={() => openAccountModal(account)}>View Transactions</button>
             </div>
         )}
+
         <ModalComp
             isOpen={openModal}
             contentLabel="Transaction"
         >
-            {fetchDate ?
-                <>
-                    <div className="modalTitle">Please select date range:</div>
-                    <label>Start Date</label>
-                    <DatePicker value={startDate} onChange={setStartDate}
-                        minDate={moment().subtract(1, "years").toDate()} />
-                    <label>End Date</label>
-                    <DatePicker value={endDate} onChange={setEndDate} />
-                    <button className="submitBtn" onClick={checkTransactions}>Check transactions</button>
-                </>
-                : <div>Do you want to view transactions for the specified dates?
-                        <button className="submitBtn" onClick={() => setFetchDate(true)}>Yes</button>
-                    <button className="submitBtn" onClick={fetchLastTrans}>No</button>
-                </div>}
+            <div className="modal">
+                {fetchDate ?
+                    <>
+                        <div className="modalTitle">Please select date range:</div>
+                        <div style={{padding: '10px 0px'}}>
+                            <span style={{margin: '10px 0px'}}>
+                                <label>Start Date</label>
+                                <DatePicker value={startDate} onChange={setStartDate}
+                                />
+                            </span>
+                            <span style={{margin: '10px'}}>
+                                <label>End Date</label>
+                                <DatePicker value={endDate} onChange={setEndDate} maxDate={new Date()} />
+                            </span>
+                        </div>
+                        {!enableCheckTrans && <div className="hintMsg">Hint: The date interval should not exceed 365 days</div>}
+                        <button className="submitBtn checkTransaction" style={{color: !enableCheckTrans? 'red': 'white', backgroundColor: !enableCheckTrans ? 'white' : 'rgba(223, 77, 215, 0.7)'}} disabled={!enableCheckTrans} onClick={checkTransactions}>Check transactions</button>
+                    </>
+                    : <div className='confirmTransaction'>
+                        <span>Do you want to view transactions for the specified dates?</span>
+                        <div>
+                            <button className="submitBtn" onClick={() => setFetchDate(true)}>Yes</button>
+                            <button className="submitBtn" onClick={fetchLastTrans}>No</button>
+                        </div>
+                    </div>}
+            </div>
         </ModalComp>
     </AccountDetailsBlock>
 }
