@@ -1,35 +1,66 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import styled from 'styled-components';
+import { UserContext } from '../App';
 
 
 const NavbarComp = styled.div`
     height: 100%;
     width: 15%;
     background-color: #CBC2F0;
-    position:fixed;
+    justify-content: space-between;
+    position: fixed;
+    top: 10%;
+    left: 0;
+    z-index: 0;
     .navList{
         margin-right: 20px;
         list-style: none;
         margin: 5px;
-        border: 1px solid;
+        padding: 10px;
+    }
+    .listItem{
         text-decoration: none;
+        padding: 10px;
+        padding-left: 15px;
+        display:block;
     }
     .active{
-        background-color: #00000F;
+        background-color: rgba(247, 143, 197, 0.56);
+        border-radius: 2px;
+    }
+`;
+const UserProfile = styled.div`
+    margin: 10%;
+    padding: 10px;
+    .profileImg{
+        border-radius: 50%;
+        width: 100%;
+    }
+    .title{
+        text-align: center;
+        font-size: 22px;
+        margin: 5px;
     }
 `;
 
+const Navbar: React.FC = () => {
 
-const Navbar: React.FC = ()=>{
- return ( 
- <NavbarComp>
-    <ul className='navList'>
-        <li><NavLink activeClassName='active' to='/accounts'> Accounts</NavLink></li>
-        <li><NavLink activeClassName='active' to='/profile'> Profile</NavLink></li>
-    </ul>
- </NavbarComp>
- )}
+    const userData: any = useContext(UserContext);
+    console.log("userDAta", userData);
+    return (
+        <NavbarComp>
+            <UserProfile className='userProfile'>
+                <img className='profileImg' src={`${userData.picture && userData.picture.large}`} alt='User profile' ></img>
+                {userData.name && <div className='title'>{userData.name.first} { userData.name.last}</div>}
+            </UserProfile>
+            <div className='navList'>
+                <NavLink  className='listItem'activeClassName='active' to='/accounts'> Accounts</NavLink>
+                <NavLink  className='listItem'activeClassName='active' to='/profile'> Profile</NavLink>
+            </div>
+        </NavbarComp>
+    )
+}
 
 export default Navbar;
