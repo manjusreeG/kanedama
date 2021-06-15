@@ -6,31 +6,31 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Profile from './pages/Profile';
 import Transactions from './pages/Transactions';
-import useRandomAPI from './hooks/useRandomAPI';
+import useRandomAPI, { randomAPIUrl } from './hooks/useRandomAPI';
 
 export const UserContext = React.createContext({});
 
 function App() {
   // Fetching  personal information
-  const userData = useRandomAPI()[0];
+  const userData = useRandomAPI(randomAPIUrl)[0];
   return (
     <UserContext.Provider value={userData}>
-    <div className="App">
-      <div className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-      </div>
-          <Container>
-          <Navbar/>
+      <div className="App">
+        <div className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+        </div>
+        <Container>
+          <Navbar />
           <Switch>
             <Route path='/' exact>
               <Redirect to='/accounts' />
             </Route>
-            <Route path='/accounts' component={Home} exact/>
-            <Route path='/profile' component={Profile}/>
-            <Route path='/accounts/:accountId' component={Transactions}/>
+            <Route path='/accounts' component={Home} exact />
+            <Route path='/profile' component={Profile} />
+            <Route path='/accounts/:accountId' component={Transactions} />
           </Switch>
-          </Container>
-    </div>
+        </Container>
+      </div>
     </UserContext.Provider>
   );
 }

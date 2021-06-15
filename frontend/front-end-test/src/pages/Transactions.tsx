@@ -1,8 +1,11 @@
 import React from 'react';
-import { useLocation } from 'react-router';
+// styled
 import styled from 'styled-components';
-import { AccountDetailsBlock } from '../components/Accounts';
+// Hooks
 import useAccountTransactions from '../hooks/useAccountTransactions';
+import { useLocation } from 'react-router';
+// Components
+import { AccountDetailsBlock } from '../components/Accounts';
 import { MainContent, Heading } from './Home';
 const moment = require('moment');
 
@@ -21,7 +24,6 @@ const TransactionTable = styled.table`
 `
 const TransactionInfo = styled.div`
     .dateDisp{
-        padding-left: 25%;
         margin: 15px;
     }
     .noData{
@@ -39,17 +41,16 @@ const Transactions: React.FC = () => {
     const accountDetails: any = location.state;
     let startDate: any;
     let endDate: any;
-    const transactionInfo = useAccountTransactions(accountDetails.account_id, startDate, endDate);
+    // fetch transaction history
+    const transactionInfo = useAccountTransactions(accountDetails.account_id, queryParams.get('startDate'), queryParams.get('endDate'));
 
     if(queryParams.get('startDate')){
         startDate = moment(queryParams.get('startDate')).toISOString().split('T')[0];
     }if(queryParams.get('endDate')){
         endDate = moment(queryParams.get('endDate')).toISOString().split('T')[0];
     }
-    console.log("startDAte ",startDate);
-    console.log("endDate ",endDate);
 
-    return <MainContent>
+    return <MainContent style={{textAlign: 'center'}}>
         <Heading>Transactions Info: </Heading>
         <AccountDetailsBlock>
             <div key={accountDetails.account_id} className='accountDetails'>
@@ -70,7 +71,7 @@ const Transactions: React.FC = () => {
                                 <th>Amount</th>
                                 <th>Status</th>
                             </thead>
-                            <tbody>
+                            <tbody key={transaction.timestamp}>
                                 <td>{transaction.timestamp}</td>
                                 <td>{transaction.transaction_type}</td>
                                 <td>{transaction.transaction_category}</td>

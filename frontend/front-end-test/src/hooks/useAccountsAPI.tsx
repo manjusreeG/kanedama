@@ -7,7 +7,7 @@ const useAccountsAPI = ()=>{
     useEffect(()=>{
         axios.get('https://kata.getmansa.com/accounts')
         .then((data)=>{
-            console.log('data',data)
+            console.log('accounts data',data)
             setAccountsData(data.data)})
         .catch((error)=>{
             // handle error

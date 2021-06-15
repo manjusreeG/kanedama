@@ -1,8 +1,12 @@
 import React, { useContext } from 'react';
+
+// styled
 import styled from 'styled-components';
+import { FcPhoneAndroid,FcPhone, FcFeedback } from 'react-icons/fc';
+
+// Components
 import { UserContext } from '../App';
 import { MainContent, Heading } from './Home';
-import { FcPhoneAndroid,FcPhone, FcFeedback } from 'react-icons/fc';
 const UserProfileData = styled.div`
     padding: 20px 0px;
     // .image, .info{

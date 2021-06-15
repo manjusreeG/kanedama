@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
-
+// Styling
 import styled from 'styled-components';
+// Context
 import { UserContext } from '../App';
-
+import { NavLink } from 'react-router-dom';
 
 const NavbarComp = styled.div`
     height: 100%;
@@ -48,16 +48,16 @@ const UserProfile = styled.div`
 const Navbar: React.FC = () => {
 
     const userData: any = useContext(UserContext);
-    console.log("userDAta", userData);
+
     return (
         <NavbarComp>
             <UserProfile className='userProfile'>
                 <img className='profileImg' src={`${userData.picture && userData.picture.large}`} alt='User profile' ></img>
-                {userData.name && <div className='title'>{userData.name.first} { userData.name.last}</div>}
+                {userData.name && <div className='title'>{userData.name.first} {userData.name.last}</div>}
             </UserProfile>
             <div className='navList'>
-                <NavLink  className='listItem'activeClassName='active' to='/accounts'> Accounts</NavLink>
-                <NavLink  className='listItem'activeClassName='active' to='/profile'> Profile</NavLink>
+                <NavLink className='listItem' activeClassName='active' to='/accounts'> Accounts</NavLink>
+                <NavLink className='listItem' activeClassName='active' to='/profile'> Profile</NavLink>
             </div>
         </NavbarComp>
     )

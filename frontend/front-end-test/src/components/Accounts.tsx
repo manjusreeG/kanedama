@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
+// styling
 import styled from 'styled-components';
+// Hooks
+import { useHistory } from 'react-router-dom';
+import useAccountsAPI from '../hooks/useAccountsAPI';
+import moment from "moment";
+
+// Components
+import { Heading } from '../pages/Home';
 import Modal from 'react-modal';
 
-import useAccountsAPI from '../hooks/useAccountsAPI';
-import DatePicker from 'react-date-picker';
-import moment from "moment";
-import { DateRangePicker } from 'react-date-range';
-import { useHistory } from 'react-router-dom';
-import { Heading } from '../pages/Home';
+// Date picker
+import DatePicker from 'react-date-picker'
 import 'react-date-picker/dist/DatePicker.css';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
 
 
 // Convert Date to ISO format helper
@@ -88,6 +90,9 @@ const ModalComp = styled(Modal)`
         margin: 0% 35%;
     }
 `
+
+// Modal.setAppElement('#checkTransModalElement');
+
 const Accounts = (): JSX.Element => {
     const [openModal, setOpenModal] = useState(false);
     const [fetchDate, setFetchDate] = useState(false);
@@ -121,13 +126,12 @@ const Accounts = (): JSX.Element => {
         })
     }
 
-    useEffect(()=>{
-        const differenceDays =  Math.abs(moment(startDate).diff(moment(endDate),'days'));
-        console.log('diff datqs', differenceDays);
-        if(differenceDays<=365) {
-            setEnableCheckTrans(true) 
-        } else{setEnableCheckTrans(false)};
-    },[startDate,endDate])
+    useEffect(() => {
+        const differenceDays = Math.abs(moment(startDate).diff(moment(endDate), 'days'));
+        if (differenceDays <= 365) {
+            setEnableCheckTrans(true)
+        } else { setEnableCheckTrans(false) };
+    }, [startDate, endDate])
 
     return <AccountDetailsBlock>
         <Heading>Accounts: </Heading>
@@ -147,19 +151,19 @@ const Accounts = (): JSX.Element => {
                 {fetchDate ?
                     <>
                         <div className="modalTitle">Please select date range:</div>
-                        <div style={{padding: '10px 0px'}}>
-                            <span style={{margin: '10px 0px'}}>
+                        <div style={{ padding: '10px 0px' }}>
+                            <span style={{ margin: '10px 0px' }}>
                                 <label>Start Date</label>
                                 <DatePicker value={startDate} onChange={setStartDate}
                                 />
                             </span>
-                            <span style={{margin: '10px'}}>
+                            <span style={{ margin: '10px' }}>
                                 <label>End Date</label>
                                 <DatePicker value={endDate} onChange={setEndDate} maxDate={new Date()} />
                             </span>
                         </div>
                         {!enableCheckTrans && <div className="hintMsg">Hint: The date interval should not exceed 365 days</div>}
-                        <button className="submitBtn checkTransaction" style={{color: !enableCheckTrans? 'red': 'white', backgroundColor: !enableCheckTrans ? 'white' : 'rgba(223, 77, 215, 0.7)'}} disabled={!enableCheckTrans} onClick={checkTransactions}>Check transactions</button>
+                        <button className="submitBtn checkTransaction" style={{ color: !enableCheckTrans ? 'red' : 'white', backgroundColor: !enableCheckTrans ? 'white' : 'rgba(223, 77, 215, 0.7)' }} disabled={!enableCheckTrans} onClick={checkTransactions}>Check transactions</button>
                     </>
                     : <div className='confirmTransaction'>
                         <span>Do you want to view transactions for the specified dates?</span>

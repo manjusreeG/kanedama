@@ -1,8 +1,11 @@
 import React, { useContext } from "react";
+// Hooks
 import useSirenAPI from "../hooks/useSirenAPI";
-import Accounts from '../components/Accounts';
+// styles
 import styled from 'styled-components';
+// Commponents
 import { UserContext } from "../App";
+import Accounts from '../components/Accounts';
 
 export const Container = styled.div`
   font-size: 1.2em;
@@ -56,7 +59,7 @@ const Home: React.FC = () => {
         <CompanyInfo>
             <Heading>Company:</Heading>
             {companyData.map((data: any) => data.unite_legale &&
-                <div>
+                <div key={data.unite_legale.id}>
                     <div className='details-block'>
                         <span className='details'>Name:</span>
                         {data.unite_legale.nom ? data.unite_legale.nom : data.unite_legale.denomination}
